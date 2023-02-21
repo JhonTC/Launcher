@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>images\LogoTemp.ico</ApplicationIcon>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>LauncherKey.pfx</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="fonts\CONFN___.TTF" />
+    <None Remove="fonts\primer print bold.ttf" />
+    <None Remove="fonts\primer print.ttf" />
+    <None Remove="images\Download.png" />
+    <None Remove="images\LogoTemp.ico" />
+    <None Remove="images\LogoTempTransparent.png" />
+    <None Remove="images\Screenshot_4.jpg" />
+    <None Remove="images\SideAndHeekBackground.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="fonts\CONFN___.TTF" />
+    <Resource Include="fonts\primer print bold.ttf" />
+    <Resource Include="fonts\primer print.ttf" />
+    <Resource Include="images\Download.png" />
+    <Resource Include="images\LogoTemp.ico" />
+    <Resource Include="images\LogoTempTransparent.png" />
+    <Resource Include="images\Screenshot_4.jpg" />
+    <Resource Include="images\SideAndHeekBackground.png" />
+  </ItemGroup>
+
+</Project>
