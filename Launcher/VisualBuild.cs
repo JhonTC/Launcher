@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -48,24 +47,33 @@ namespace Launcher
                     case LauncherStatus.downloadingUpdate:
                         button.Content = "Downloading Update";
                         break;
+                    case LauncherStatus.deprecated:
+                        button.Content = "Build Deprecated";
+                        break;
                     default:
                         break;
                 }
             }
         }
 
-        internal VisualBuild(string _friendlyName, BuildType _buildType, string _rootPath, string _subFolderName, string _versionFileLink, string _buildFileLink, string _gitProjectLink,  Button _button, TextBlock _versionTextBlock, TextBlock _downloadProgressText) 
+        internal VisualBuild(string _friendlyName, BuildType _buildType, string _rootPath, string _subFolderName, string _versionFileLink, string _buildFileLink, string _gitProjectLink,  Button _button, TextBlock _versionTextBlock, TextBlock _downloadProgressText, LauncherStatus initialStatus = LauncherStatus.idle) 
             : base(_friendlyName, _buildType, _rootPath, _subFolderName, _versionFileLink, _buildFileLink, _gitProjectLink)
         {
             button = _button;
 
             versionTextBlock = _versionTextBlock;
             downloadProgressText = _downloadProgressText;
+
+            Status = initialStatus;
+            if (initialStatus == LauncherStatus.deprecated)
+            {
+                button.IsEnabled = false;
+            }
         }
 
         public override async Task CheckForUpdates(bool autoDownload = false, bool autoLaunch = false, bool autoClose = false)
         {
-            if (Status == LauncherStatus.downloadingGame || Status == LauncherStatus.downloadingUpdate)
+            if (Status == LauncherStatus.downloadingGame || Status == LauncherStatus.downloadingUpdate || Status == LauncherStatus.deprecated)
             {
                 return;
             }
@@ -199,7 +207,7 @@ namespace Launcher
 
         public async void LaunchButton_Click(bool autoClose = false)
         {
-            if (Status == LauncherStatus.downloadingGame || Status == LauncherStatus.downloadingUpdate)
+            if (Status == LauncherStatus.downloadingGame || Status == LauncherStatus.downloadingUpdate || Status == LauncherStatus.deprecated)
             {
                 return;
             }

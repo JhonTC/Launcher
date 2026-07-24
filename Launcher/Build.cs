@@ -57,7 +57,7 @@ namespace Launcher
 
         public virtual async Task CheckForUpdates(bool autoDownload = false, bool autoLaunch = false, bool autoClose = false)
         {
-            if (Status == LauncherStatus.downloadingGame || Status == LauncherStatus.downloadingUpdate)
+            if (Status == LauncherStatus.downloadingGame || Status == LauncherStatus.downloadingUpdate || Status == LauncherStatus.deprecated)
             {
                 return;
             }

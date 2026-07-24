@@ -179,7 +179,7 @@
                            HorizontalAlignment="Center"
                            RenderOptions.BitmapScalingMode="Fant"/>
 
-                    <TextBlock Text="Sprout Studios" 
+                    <TextBlock Text="CarpCorp" 
                        Foreground="White" 
                        Grid.Column="1" 
                        VerticalAlignment="Center" 
@@ -279,7 +279,7 @@
                                                    Source="images/LogoTempTransparent.png"
                                                    Margin="-5, 10, 0, 10"
                                                    RenderOptions.BitmapScalingMode="Fant"/>
-                                            <TextBlock Text="Client"
+                                            <TextBlock Text="Client/Host"
                                                        Foreground="White"
                                                        FontSize="30"
                                                        FontWeight="Bold"
@@ -288,27 +288,9 @@
                                                        Margin="10, 0, 0, 0"/>
                                         </StackPanel>
 
-                                        <TextBlock Text="Download"
+                                        <TextBlock Text="With this version you can connect to a server as a client or host your own server using Epic Online Service's peer to peer networking."
                                                    Foreground="White"
-                                                   FontSize="35"
-                                                   FontWeight="Bold"
-                                                   FontFamily="fonts/#Primer Print"/>
-
-                                        <TextBlock Text="Link"
-                                                   Foreground="White"
-                                                   FontSize="35"
-                                                   FontWeight="Bold"
-                                                   FontFamily="fonts/#Primer Print"/>
-
-                                        <TextBlock Text="Below"
-                                                   Foreground="White"
-                                                   FontSize="35"
-                                                   FontWeight="Bold"
-                                                   FontFamily="fonts/#Primer Print"/>
-
-                                        <TextBlock Text="This is the client for Side And Heek. If you are a tester or player, then you want to use the button below."
-                                                   Foreground="White"
-                                                   FontSize="15"
+                                                   FontSize="20"
                                                    FontWeight="Bold"
                                                    FontFamily="fonts/#Primer Print"
                                                    TextWrapping="Wrap"
@@ -398,7 +380,7 @@
                                                    Source="images/LogoTempTransparent.png"
                                                    Margin="-5, 10, 0, 10"
                                                    RenderOptions.BitmapScalingMode="Fant"/>
-                                            <TextBlock Text="Server"
+                                            <TextBlock Text="Server-only (deprecated)"
                                                        Foreground="White"
                                                        FontSize="30"
                                                        FontWeight="Bold"
@@ -407,27 +389,9 @@
                                                        Margin="10, 0, 0, 0"/>
                                         </StackPanel>
 
-                                        <TextBlock Text="Download"
+                                        <TextBlock Text="With this version you host your own dedicated server using UDP transport. This requires you to open port 42069 on your router."
                                                    Foreground="White"
-                                                   FontSize="35"
-                                                   FontWeight="Bold"
-                                                   FontFamily="fonts/#Primer Print"/>
-
-                                        <TextBlock Text="Link"
-                                                   Foreground="White"
-                                                   FontSize="35"
-                                                   FontWeight="Bold"
-                                                   FontFamily="fonts/#Primer Print"/>
-
-                                        <TextBlock Text="Below"
-                                                   Foreground="White"
-                                                   FontSize="35"
-                                                   FontWeight="Bold"
-                                                   FontFamily="fonts/#Primer Print"/>
-
-                                        <TextBlock Text="This is the server for Side And Heek. If you want to run a custom server the use the button below. You will also need to port forward."
-                                                   Foreground="White"
-                                                   FontSize="15"
+                                                   FontSize="20"
                                                    FontWeight="Bold"
                                                    FontFamily="fonts/#Primer Print"
                                                    TextWrapping="Wrap"

@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Launcher
@@ -21,7 +18,8 @@ namespace Launcher
         readyToLaunch,
         failed,
         downloadingGame,
-        downloadingUpdate
+        downloadingUpdate,
+        deprecated
     }
     enum BuildType
     {
@@ -76,10 +74,11 @@ namespace Launcher
                 new VisualBuild("Side & Heek Server", BuildType.Server, rootPath, "SideAndHeek",
                     "https://www.dropbox.com/s/80n5d4j8ovst9x1/Version_Server.txt?dl=1",
                     "https://www.dropbox.com/s/6gs8otekcdlpleb/Build_Server.zip?dl=1",
-                    "https://github.com/JhonTC/Side-And-Heek-Server/tree/development",
+                    "https://github.com/JhonTC/Side-And-Heek-Client/tree/development",
                     LaunchServerButton,
                     ServerVersionText,
-                    ServerDownloadProgressText)
+                    ServerDownloadProgressText,
+                    LauncherStatus.deprecated)
             });
         }
 
@@ -93,7 +92,7 @@ namespace Launcher
 
             await Task.WhenAll(tasks);
 
-            for (int i = 0; i < startupArguments.Args.Length; i++)
+            /*for (int i = 0; i < startupArguments.Args.Length; i++)
             {
                 switch (startupArguments.Args[i])
                 {
@@ -112,7 +111,7 @@ namespace Launcher
                         }
                         break;
                 }
-            }
+            }*/
         }
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
