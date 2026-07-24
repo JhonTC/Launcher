@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 
 namespace Launcher
 {
-    class Software
+    public class Software
     {
-        public Build[] builds;
+        public string name { get; set; }
+        public Build[] builds { get; set; }
 
-        internal Software(Build[] _builds)
+        internal Software(string _name, Build[] _builds)
         {
+            name = _name;
             builds = _builds;
         }
 

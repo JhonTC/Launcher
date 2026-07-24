@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:Launcher"
              Startup="Application_Startup">
     <Application.Resources>
-         
+        <ResourceDictionary Source="CustomViewsDictionary.xaml" />
     </Application.Resources>
 </Application>

@@ -8,12 +8,23 @@
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>LauncherKey.pfx</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
+    <Platforms>AnyCPU;x86</Platforms>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="fonts\CONFN___.TTF" />
     <None Remove="fonts\primer print bold.ttf" />
     <None Remove="fonts\primer print.ttf" />
+    <None Remove="images\BannerWhiteTransparent.png" />
+    <None Remove="images\CarpWhite.png" />
     <None Remove="images\Download.png" />
     <None Remove="images\LogoTemp.ico" />
     <None Remove="images\LogoTempTransparent.png" />
@@ -22,6 +33,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Remove="ControlTemplate.xaml" />
+    <Page Remove="ItemTemplate.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="ControlTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="images\BannerWhiteTransparent.png" />
+    <Resource Include="images\CarpWhite.png" />
+    <Resource Include="ItemTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
     <Resource Include="fonts\CONFN___.TTF" />
     <Resource Include="fonts\primer print bold.ttf" />
     <Resource Include="fonts\primer print.ttf" />

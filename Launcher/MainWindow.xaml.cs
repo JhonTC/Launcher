@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,7 +10,7 @@ using System.Windows.Input;
 
 namespace Launcher
 {
-    enum LauncherStatus
+    public enum LauncherStatus
     {
         idle,
         updateRequired,
@@ -23,7 +20,7 @@ namespace Launcher
         downloadingGame,
         downloadingUpdate
     }
-    enum BuildType
+    public enum BuildType
     {
         Client,
         Server,
@@ -44,43 +41,56 @@ namespace Launcher
 
         private Build launcherUpdaterBuild;
 
-        private Software sideAndHeekApp;
+        List<Software> apps = new List<Software>();
 
         private StartupEventArgs startupArguments;
 
+        public static Software activeVisibleSoftware;
+
         public MainWindow(StartupEventArgs _startupArguments)
         {
-            startupArguments = _startupArguments;
-
             InitializeComponent();
+
+            startupArguments = _startupArguments;
 
             rootPath = Directory.GetCurrentDirectory();
 
             launcherVersionLink = "https://www.dropbox.com/s/7fmu6ldaatzqpbv/Version_Launcher.txt?dl=1";
             launcherVersionFile = Path.Combine(rootPath, "Version_Launcher.txt");
-
             launcherUpdaterBuild = new Build("LauncherUpdater", BuildType.LauncherUpdater, rootPath, null,
                 "https://www.dropbox.com/s/yv684yo5z2f2740/Version_LauncherUpdater.txt?dl=1",
                 "https://www.dropbox.com/s/afud1bxd9m5wy9w/LauncherUpdater.zip?dl=1",
                 null);
 
-            sideAndHeekApp = new Software(new[]
+            string friendlyAppName = "Side & Heek";
+            string safeAppName = "SideAndHeek";
+            Software sideAndHeekApp = new Software(friendlyAppName, new[]
             {
-                new VisualBuild("Side & Heek", BuildType.Client, rootPath, "SideAndHeek",
+                new VisualBuild(friendlyAppName,
+                    "This is the client for Side And Heek. If you are a tester or player, then you want to use the button below.", 
+                    BuildType.Client, rootPath, safeAppName,
                     "https://www.dropbox.com/s/zee4dpmflw59ksj/Version_Client.txt?dl=1",
                     "https://www.dropbox.com/s/rvfsr6f4hl3fegz/Build_Client.zip?dl=1",
-                    "https://github.com/JhonTC/Side-And-Heek-Client/tree/development",
-                    LaunchClientButton,
-                    ClientVersionText,
-                    ClientDownloadProgressText),
-                new VisualBuild("Side & Heek Server", BuildType.Server, rootPath, "SideAndHeek",
+                    "https://github.com/JhonTC/Side-And-Heek-Client/tree/development"),
+
+                new VisualBuild($"{friendlyAppName} Server",
+                    "This is the server for Side And Heek. If you want to run a custom server the use the button below. You will also need to port forward.", 
+                    BuildType.Server, rootPath, safeAppName,
                     "https://www.dropbox.com/s/80n5d4j8ovst9x1/Version_Server.txt?dl=1",
                     "https://www.dropbox.com/s/6gs8otekcdlpleb/Build_Server.zip?dl=1",
-                    "https://github.com/JhonTC/Side-And-Heek-Server/tree/development",
-                    LaunchServerButton,
-                    ServerVersionText,
-                    ServerDownloadProgressText)
+                    "https://github.com/JhonTC/Side-And-Heek-Server/tree/development")
             });
+
+            apps.Add(sideAndHeekApp);
+            apps.Add(sideAndHeekApp);
+
+            TabControl1.ItemsSource = apps;
+            TabControl1.SelectionChanged += TabControl_SelectionChanged;
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            activeVisibleSoftware = TabControl1.SelectedItem as Software;
         }
 
         private async void Window_ContentRendered(object sender, EventArgs e)
@@ -89,7 +99,12 @@ namespace Launcher
 
             tasks.Add(launcherUpdaterBuild.CheckForUpdates(true));
             tasks.Add(CheckForLauncherUpdates());
-            tasks.AddRange(sideAndHeekApp.CheckForUpdates());
+
+            foreach(var app in apps) 
+            {
+                tasks.AddRange(app.CheckForUpdates());
+            }
+            
 
             await Task.WhenAll(tasks);
 
@@ -97,8 +112,8 @@ namespace Launcher
             {
                 switch (startupArguments.Args[i])
                 {
-                    case "relaunch_server":
-                        VisualBuild server = sideAndHeekApp.builds[1] as VisualBuild;
+                    case "relaunch_sah_server":
+                        VisualBuild server = apps[0].builds[1] as VisualBuild; //todo: add value to relaunch?
                         if (server != null)
                         {
                             server.CloseAllActiveProcesses();
@@ -133,7 +148,7 @@ namespace Launcher
             Close();
         }
 
-        private void LaunchClientButton_Click(object sender, RoutedEventArgs e)
+        /*private void LaunchClientButton_Click(object sender, RoutedEventArgs e)
         {
             VisualBuild client = sideAndHeekApp.builds[0] as VisualBuild;
             if (client != null)
@@ -167,36 +182,7 @@ namespace Launcher
             {
                 OpenUrl(server.gitProjectLink);
             }
-        }
-
-        private void OpenUrl(string url)
-        {
-            try
-            {
-                Process.Start(url);
-            }
-            catch
-            {
-                // hack because of this: https://github.com/dotnet/corefx/issues/10361
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    url = url.Replace("&", "^&");
-                    Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    Process.Start("xdg-open", url);
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                {
-                    Process.Start("open", url);
-                }
-                else
-                {
-                    throw;
-                }
-            }
-        }
+        }*/
 
         private void UpdateLauncher_Click(object sender, RoutedEventArgs e)
         {
@@ -259,7 +245,7 @@ namespace Launcher
         }
     }
 
-    struct Version
+    public struct Version
     {
         internal static Version zero = new Version(0, 0, 0);
 

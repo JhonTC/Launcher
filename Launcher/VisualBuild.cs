@@ -1,23 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace Launcher
 {
-    class VisualBuild : Build
+    public class VisualBuild : Build
     {
         public Button button;
-
-        public TextBlock versionTextBlock;
-        public TextBlock downloadProgressText;
+        public string description { get; set; }
+        //public TextBlock versionTextBlock;
+        //public TextBlock downloadProgressText;
 
         public override LauncherStatus Status
         {
@@ -25,6 +23,9 @@ namespace Launcher
             set
             {
                 _status = value;
+
+                if (button == null) return;
+
                 switch (_status)
                 {
                     case LauncherStatus.idle:
@@ -54,13 +55,20 @@ namespace Launcher
             }
         }
 
-        internal VisualBuild(string _friendlyName, BuildType _buildType, string _rootPath, string _subFolderName, string _versionFileLink, string _buildFileLink, string _gitProjectLink,  Button _button, TextBlock _versionTextBlock, TextBlock _downloadProgressText) 
+        internal VisualBuild(string _friendlyName, string _description, BuildType _buildType, string _rootPath, string _subFolderName, string _versionFileLink, string _buildFileLink, string _gitProjectLink,  Button _button, TextBlock _versionTextBlock, TextBlock _downloadProgressText) 
             : base(_friendlyName, _buildType, _rootPath, _subFolderName, _versionFileLink, _buildFileLink, _gitProjectLink)
         {
-            button = _button;
+            description = _description;
+            //button = _button;
 
-            versionTextBlock = _versionTextBlock;
-            downloadProgressText = _downloadProgressText;
+            //versionTextBlock = _versionTextBlock;
+            //downloadProgressText = _downloadProgressText;
+        }
+
+        internal VisualBuild(string _friendlyName, string _description, BuildType _buildType, string _rootPath, string _subFolderName, string _versionFileLink, string _buildFileLink, string _gitProjectLink)
+            : base(_friendlyName, _buildType, _rootPath, _subFolderName, _versionFileLink, _buildFileLink, _gitProjectLink)
+        {
+            description = _description;
         }
 
         public override async Task CheckForUpdates(bool autoDownload = false, bool autoLaunch = false, bool autoClose = false)
@@ -70,7 +78,7 @@ namespace Launcher
                 return;
             }
 
-            button.IsEnabled = false;
+            //button.IsEnabled = false;
             try
             {
                 WebClient webClient = new WebClient();
@@ -82,18 +90,18 @@ namespace Launcher
 
                     if (onlineVersion.IsDifferentThan(localVersion))
                     {
-                        versionTextBlock.Text = $"{localVersion} (Update {onlineVersion})";
+                        //versionTextBlock.Text = $"{localVersion} (Update {onlineVersion})";
                         Status = LauncherStatus.updateRequired;
                     }
                     else
                     {
-                        versionTextBlock.Text = localVersion.ToString();
+                        //versionTextBlock.Text = localVersion.ToString();
                         Status = LauncherStatus.readyToLaunch;
                     }
                 }
                 else
                 {
-                    versionTextBlock.Text = onlineVersion.ToString();
+                    //versionTextBlock.Text = onlineVersion.ToString();
                     Status = LauncherStatus.downloadRequired;
                 }
             }
@@ -102,7 +110,7 @@ namespace Launcher
                 Status = LauncherStatus.failed;
                 MessageBox.Show($"Error checking for updates: {ex}");
             }
-            button.IsEnabled = true;
+            //button.IsEnabled = true;
 
             if (autoDownload)
             {
@@ -124,7 +132,7 @@ namespace Launcher
 
         protected override async Task DownloadFiles(bool isUpdate, Version _onlineVersion, bool autoLaunch = false, bool autoClose = false)
         {
-            button.IsEnabled = false;
+            //button.IsEnabled = false;
             try
             {
                 if (!Directory.Exists(rootPath))
@@ -146,16 +154,15 @@ namespace Launcher
                 webClient.DownloadFileCompleted += new AsyncCompletedEventHandler((object sender, AsyncCompletedEventArgs e) => { DownloadCompletedCallback(onlineVersion, autoLaunch, autoClose); });
                 webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgressChangedCallback);
 
-                downloadProgressText.Margin = new Thickness(10, 0, 0, 0);
-                downloadProgressText.Text = "0%";
-                //webClient.DownloadFileAsync(new Uri(buildFileLink), buildZip, _onlineVersion);
+                //downloadProgressText.Margin = new Thickness(10, 0, 0, 0);
+                //downloadProgressText.Text = "0%";
                 await webClient.DownloadFileTaskAsync(new Uri(buildFileLink), buildZip);
             }
             catch (Exception ex)
             {
                 Status = LauncherStatus.failed;
                 MessageBox.Show($"Error downloading files: {ex}");
-                button.IsEnabled = true;
+                //button.IsEnabled = true;
             }
         }
 
@@ -164,13 +171,13 @@ namespace Launcher
             double bytesIn = double.Parse(e.BytesReceived.ToString());
             double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
             double percentage = bytesIn / totalBytes * 100;
-            downloadProgressText.Text = $"{Math.Truncate(percentage)}%";
+            //downloadProgressText.Text = $"{Math.Truncate(percentage)}%";
         }
 
         protected override void DownloadCompletedCallback(Version _onlineVersion, bool autoLaunch = false, bool autoClose = false)
         {
-            downloadProgressText.Margin = new Thickness(0, 0, 0, 0);
-            downloadProgressText.Text = "";
+            //downloadProgressText.Margin = new Thickness(0, 0, 0, 0);
+            //downloadProgressText.Text = "";
             string onlineVersion = _onlineVersion.ToString();
 
             try
@@ -180,7 +187,7 @@ namespace Launcher
 
                 File.WriteAllText(versionFile, onlineVersion);
 
-                versionTextBlock.Text = onlineVersion;
+                //versionTextBlock.Text = onlineVersion;
                 Status = LauncherStatus.readyToLaunch;
 
                 if (autoLaunch)
@@ -194,7 +201,7 @@ namespace Launcher
                 MessageBox.Show($"Error installing files: {ex}");
             }
 
-            button.IsEnabled = true;
+            //button.IsEnabled = true;
         }
 
         public async void LaunchButton_Click(bool autoClose = false)

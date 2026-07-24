@@ -1,0 +1,144 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:Class="Launcher.CustomViewsDictionary">
+    <DataTemplate x:Key="MainTabControlTemplate">
+        <StackPanel>
+            <Border Background="#FF181735" CornerRadius="11" Width="1066" >
+                <Grid Height="508">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border CornerRadius="10" Grid.ColumnSpan="2" Margin="0,0,0,8">
+                        <Border.Background>
+                            <ImageBrush Stretch="UniformToFill" ImageSource="images/BannerWhiteTransparent.png" Opacity="0.05"/>
+                        </Border.Background>
+                    </Border>
+
+                    <StackPanel></StackPanel>
+
+                    <StackPanel ></StackPanel>
+                </Grid>
+            </Border>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="VisualBuildTemplate">
+        <StackPanel VerticalAlignment="Center" Margin="60">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal"
+                    Margin="0, 0, 0, 10">
+                    <Image Width="50" Height="50"
+                         Source="images/LogoTempTransparent.png"
+                         Margin="-5, 10, 0, 10"
+                         RenderOptions.BitmapScalingMode="Fant"/>
+                    <TextBlock Text="Client"
+                         Foreground="White"
+                         FontSize="30"
+                         FontWeight="Bold"
+                         VerticalAlignment="Center"
+                         FontFamily="fonts/#Primer Print"
+                         Margin="10, 0, 0, 0"/>
+                </StackPanel>
+
+                <TextBlock Text="Download"
+                     Foreground="White"
+                     FontSize="35"
+                     FontWeight="Bold"
+                     FontFamily="fonts/#Primer Print"/>
+
+                <TextBlock Text="Link"
+                     Foreground="White"
+                     FontSize="35"
+                     FontWeight="Bold"
+                     FontFamily="fonts/#Primer Print"/>
+
+                <TextBlock Text="Below"
+                     Foreground="White"
+                     FontSize="35"
+                     FontWeight="Bold"
+                     FontFamily="fonts/#Primer Print"/>
+
+                <TextBlock Text="{Binding builds[0].description}"
+                     Foreground="White"
+                     FontSize="15"
+                     FontWeight="Bold"
+                     FontFamily="fonts/#Primer Print"
+                     TextWrapping="Wrap"
+                     Margin="0, 10, 0, 0"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0, 15, 0, 0">
+                <Button Name="LaunchClientButton" Content="Checking For Client Updates" Click="LaunchClientButton_Click"
+                    Foreground="White"
+                    FontSize="14"
+                    FontWeight="Bold"
+                    Margin="0, 0, 0, 0">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="TextElement.FontFamily" Value="fonts/#Primer Print"/>
+                            <Setter Property="Background" Value="#FFFE6584"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FFFF4C70"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Background" Value="#FFA67D85"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="170" Height="30"
+                                CornerRadius="15"
+                                Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center"
+                                     HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <TextBlock x:Name="ClientDownloadProgressText" Text="" VerticalAlignment="Center"/>
+                <TextBlock Name="ClientVersionText" Text="0.0.0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" Margin="10, 0, 0, 0" FontFamily="#fonts/#Primer Print" FontWeight="Normal" Foreground="#FF5B5B5B"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="OpenClientGithub" Content="Open Github Link" Click="OpenClientGithubButton_Click"
+                    Foreground="White"
+                    FontSize="12"
+                    FontWeight="Bold"
+                    Margin="0, 5, 5, 0">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="TextElement.FontFamily" Value="fonts/#Primer Print"/>
+                            <Setter Property="Background" Value="#FF907ECB"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FF876FD4"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Background" Value="#FF8377AC"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="100" Height="25"
+                                CornerRadius="12"
+                                Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center"
+                                     HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+    </DataTemplate>
+</ResourceDictionary>

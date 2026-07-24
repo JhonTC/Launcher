@@ -12,9 +12,9 @@ using System.Windows.Controls;
 
 namespace Launcher
 {
-    class Build
+    public class Build
     {
-        public string friendlyName;
+        public string friendlyName { get; set; }
         protected string rootPath;
         protected string buildPath;
         public string versionFile;
