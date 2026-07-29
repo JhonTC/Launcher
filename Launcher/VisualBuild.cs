@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -26,7 +25,7 @@ namespace Launcher
                 _status = value;
                 switch (_status)
                 {
-                    case LauncherStatus.idle:
+                    case LauncherStatus.checkForUpdates:
                         button.Content = "Check For Updates";
                         break;
                     case LauncherStatus.downloadRequired:
@@ -56,7 +55,7 @@ namespace Launcher
             }
         }
 
-        internal VisualBuild(string _friendlyName, BuildType _buildType, string _rootPath, string _subFolderName, string _versionFileLink, string _buildFileLink, string _gitProjectLink,  Button _button, TextBlock _versionTextBlock, TextBlock _downloadProgressText, LauncherStatus initialStatus = LauncherStatus.idle) 
+        internal VisualBuild(string _friendlyName, BuildType _buildType, string _rootPath, string _subFolderName, string _versionFileLink, string _buildFileLink, string _gitProjectLink,  Button _button, TextBlock _versionTextBlock, TextBlock _downloadProgressText, LauncherStatus initialStatus = LauncherStatus.checkForUpdates) 
             : base(_friendlyName, _buildType, _rootPath, _subFolderName, _versionFileLink, _buildFileLink, _gitProjectLink)
         {
             button = _button;
@@ -77,6 +76,8 @@ namespace Launcher
             {
                 return;
             }
+
+            Status = LauncherStatus.checkForUpdates;
 
             button.IsEnabled = false;
             try

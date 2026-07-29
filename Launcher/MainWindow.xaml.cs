@@ -12,7 +12,7 @@ namespace Launcher
 {
     enum LauncherStatus
     {
-        idle,
+        checkForUpdates,
         updateRequired,
         downloadRequired,
         readyToLaunch,
@@ -45,6 +45,8 @@ namespace Launcher
         private Software sideAndHeekApp;
 
         private StartupEventArgs startupArguments;
+
+        List<Task> tasks = new List<Task>();
 
         public MainWindow(StartupEventArgs _startupArguments)
         {
@@ -80,11 +82,13 @@ namespace Launcher
                     ServerDownloadProgressText,
                     LauncherStatus.deprecated)
             });
+
+            Activated += Window_Activated;
         }
 
-        private async void Window_ContentRendered(object sender, EventArgs e)
+        private async void Window_Activated(object sender, EventArgs e)
         {
-            List<Task> tasks = new List<Task>();
+            if (tasks.Count > 0) return;
 
             tasks.Add(launcherUpdaterBuild.CheckForUpdates(true));
             tasks.Add(CheckForLauncherUpdates());
@@ -92,6 +96,20 @@ namespace Launcher
 
             await Task.WhenAll(tasks);
 
+            tasks.Clear();
+        }
+
+        private async void Window_ContentRendered(object sender, EventArgs e)
+        {
+            if (tasks.Count > 0) return;
+
+            tasks.Add(launcherUpdaterBuild.CheckForUpdates(true));
+            tasks.Add(CheckForLauncherUpdates());
+            tasks.AddRange(sideAndHeekApp.CheckForUpdates());
+
+            await Task.WhenAll(tasks);
+
+            tasks.Clear();
             /*for (int i = 0; i < startupArguments.Args.Length; i++)
             {
                 switch (startupArguments.Args[i])
